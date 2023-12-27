@@ -14,6 +14,7 @@
   - [Как использовать nethasp.ini в Jenkins + Docker Swarm plugin](#как-использовать-nethaspini-в-jenkins--docker-swarm-plugin)
 - [Оглавление](#оглавление)
   - [Сервер](#сервер)
+  - [Автономный сервер](#АвтономныйСервер)
   - [Сервер с дополнительными языками](#сервер-с-дополнительными-языками)
   - [Клиент](#клиент)
   - [Клиент с поддержкой VNC](#клиент-с-поддержкой-vnc)
@@ -93,6 +94,18 @@ docker build --build-arg ONEC_USERNAME=${ONEC_USERNAME} \
   -t ${DOCKER_REGISTRY_URL}/onec-server:${ONEC_VERSION} \
   -f server/Dockerfile .
 ```
+
+## АвтономныйСервер
+[(Наверх)](#Оглавление)
+
+```bash
+docker build --build-arg ONEC_USERNAME=${ONEC_USERNAME} \
+  --build-arg ONEC_PASSWORD=${ONEC_PASSWORD} \
+  --build-arg ONEC_VERSION=${ONEC_VERSION} \
+  -t ${DOCKER_REGISTRY_URL}/standalone-server-oscript:${ONEC_VERSION} \
+  -f standalone-server-oscript/Dockerfile .
+```
+
 
 ## Сервер с дополнительными языками
 [(Наверх)](#Оглавление)
