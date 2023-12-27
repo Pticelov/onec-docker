@@ -73,6 +73,9 @@ else
       thin-client32)
 	    ./setup-thin-${ONEC_VERSION}-i386.run --mode unattended --enable-components ru
           ;;
-
+      standaloneServer)
+	    echo "for standalone server"
+      ./setup-full-${ONEC_VERSION}-x86_64.run --mode unattended --enable-components server,client_full,client_thin_fib,ws,$nls_install
+          ;;
     esac
 fi
