@@ -28,7 +28,7 @@ RUN rm ./${downloads}/.gitkeep \
 FROM ubuntu:18.04 as base
 
 ARG ONEC_VERSION
-ENV installer_type=client
+ENV installer_type=standaloneServer
 ARG nls_enabled=false
 ENV nls=$nls_enabled
 
@@ -94,15 +94,16 @@ RUN groupadd -r grp1cv8 --gid=$onec_gid \
 #oscript
 # Installing mono and oscript dependencies
 ARG MONO_VERSION=6.12.0.122
-
 RUN apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-      ca-certificates \
       gnupg \
       dirmngr \
       wget \
+          apt-transport-https\
+          ca-certificates\
+          software-properties-common\
   && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
-  && echo "deb http://download.mono-project.com/repo/debian stable-buster main" > /etc/apt/sources.list.d/mono-official-stable.list \
+  && echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" > /etc/apt/sources.list.d/mono-official-stable.list \
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     mono-runtime \
@@ -127,7 +128,7 @@ RUN chmod +x /remove-dst-root-ca-x3.sh \
 ARG OVM_REPOSITORY_OWNER=oscript-library
 ARG OVM_VERSION=v1.0.0-RC16
 ARG ONESCRIPT_VERSION=stable
-ARG ONESCRIPT_PACKAGES="add vanessa-runner"
+ARG ONESCRIPT_PACKAGES="add gitsync vanessa-runner stebi"
 
 RUN wget https://github.com/${OVM_REPOSITORY_OWNER}/ovm/releases/download/${OVM_VERSION}/ovm.exe \
   && mv ovm.exe /usr/local/bin/ \
