@@ -6,7 +6,8 @@ FROM ${DOCKER_REGISTRY_URL}/${DOCKER_IMAGE}:${ONEC_VERSION} as base
 FROM debian:bullseye-slim
 ARG ONEC_VERSION
 
-COPY --from=base /opt /opt
+COPY --from=base /opt /opt 
+COPY --from=base /usr/local/bin/ /usr/local/bin/ 
 
 ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.8.0/s6-overlay-amd64.tar.gz /tmp/
 
@@ -88,6 +89,9 @@ COPY ./configs/client-vnc/rootfs/ /
 ENV DISPLAY=:0
 ENV DISPLAY_WIDTH=1440
 ENV DISPLAY_HEIGHT=900
+
+ENV OSCRIPTBIN=/usr/local/bin/ovm/stable/bin
+ENV PATH="$OSCRIPTBIN:$PATH"
 
 EXPOSE 5900
 
