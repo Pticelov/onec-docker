@@ -121,7 +121,7 @@ RUN wget https://github.com/${OVM_REPOSITORY_OWNER}/ovm/releases/download/${OVM_
   && mv ovm.exe /usr/local/bin/ \
   && echo 'mono /usr/local/bin/ovm.exe "$@"' | tee /usr/local/bin/ovm \
   && chmod +x /usr/local/bin/ovm \
-  && chown -R usr1cv8:grp1cv8 /usr/local/bin \
+  && chown -R usr1cv8:usr1cv8 /usr/local/bin \
   && ovm use --install ${ONESCRIPT_VERSION} \
   && rm /usr/local/bin/ovm* \
   && mv /root/.local/share/ovm/ /usr/local/bin
