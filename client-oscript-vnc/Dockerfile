@@ -130,9 +130,11 @@ ENV OSCRIPTBIN=/usr/local/bin/ovm/stable/bin
 ENV PATH="$OSCRIPTBIN:$PATH"
 
 # Update and prepare oscript packages
+#библиотеки будем ставить свои и отдельно
 RUN opm install opm \
-  && opm update --all \
-  && opm install ${ONESCRIPT_PACKAGES}
+  && opm update --all 
+  #\
+  #&& opm install ${ONESCRIPT_PACKAGES}
 
 
 COPY ./configs/client-vnc/rootfs/ /
