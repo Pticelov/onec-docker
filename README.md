@@ -126,6 +126,7 @@ docker build --build-arg DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL} \
   -t ${DOCKER_REGISTRY_URL}/onec-client-vnc:${ONEC_VERSION} \
   -f client-vnc/Dockerfile .
 ```
+Запуск контейнера с доступом по VNC docker run -it --rm -p 32771:5900 ID контейнера
 
 ## Клиент с дополнительными языками
 [(Наверх)](#Оглавление)
