@@ -5,7 +5,7 @@
 build_info.txt
 .DS_Store
 dive.log
-key/
+key/id_rsa*
 
 # Configuration file for HASP LM
 nethasp.ini
