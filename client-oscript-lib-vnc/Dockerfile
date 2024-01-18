@@ -1,17 +1,28 @@
 ARG DOCKER_REGISTRY_URL
 ARG DOCKER_IMAGE
 ARG ONEC_VERSION
+
+
 FROM ${DOCKER_REGISTRY_URL}/${DOCKER_IMAGE}:${ONEC_VERSION}
+ARG ssh_prv_key
+ARG ssh_pub_key
 
-#COPY --from=base /opt /opt 
+# Авторизация SSH Host
+RUN mkdir -p /root/.ssh \
+    && chmod 0700 /root/.ssh \
+    && ssh-keyscan -t rsa coderepo.corp.tander.ru >> /root/.ssh/known_hosts \
+    && ssh-keyscan -t rsa 10.8.98.66 >> /root/.ssh/known_hosts
 
-ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.8.0/s6-overlay-amd64.tar.gz /tmp/
-
-ENV LANG ru_RU.UTF-8
-ENV OSCRIPTBIN=/usr/local/bin/ovm/stable/bin
-ENV PATH="$OSCRIPTBIN:$PATH"
-
-#COPY ./configs/client-vnc/rootfs/ /
+# загрузка библиотеки
+RUN echo "$ssh_prv_key" > /root/.ssh/id_rsa \
+    && echo "$ssh_pub_key" > /root/.ssh/id_rsa.pub \
+    && chmod 600 /root/.ssh/id_rsa \
+    && chmod 600 /root/.ssh/id_rsa.pub \
+    && git clone git@coderepo.corp.tander.ru:1c/onescript.git /tmp/onescript \
+    && rm -r /usr/local/bin/ovm/stable/lib/* \
+    && cp -r /tmp/onescript/lib/* /usr/local/bin/ovm/stable/lib \
+    && rm -r /tmp/onescript \
+    && rm -r /root/.ssh
 
 ENV DISPLAY=:0
 ENV DISPLAY_WIDTH=1440
