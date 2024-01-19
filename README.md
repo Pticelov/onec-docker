@@ -9,6 +9,7 @@
 - [Описание](#описание)
 - [Использование](#использование)
   - [Как сбилдить образы](#как-сбилдить-образы)
+  - [Особенности запуска контейнеров в VNC](#запуск-контейнера-VNC)
   - [Как запустить в docker-compose](#как-запустить-в-docker-compose)
   - [Как использовать готовые дистрибутивы](#как-использовать-готовые-дистрибутивы)
   - [Как использовать nethasp.ini в Jenkins + Docker Swarm plugin](#как-использовать-nethaspini-в-jenkins--docker-swarm-plugin)
@@ -18,6 +19,8 @@
   - [Сервер с дополнительными языками](#сервер-с-дополнительными-языками)
   - [Клиент](#клиент)
   - [Клиент с поддержкой VNC](#клиент-с-поддержкой-vnc)
+  - [Автономный сервер с установленным onescript, поддержкой VNC](#АвтономныйСервер-onescript-с-поддержкой-vnc)
+  - [Автономный сервер с установленным onescript, корп библиотеками onescript поддержкой VNC](#АвтономныйСервер-onescript-lib-с-поддержкой-vnc)
   - [Клиент с дополнительными языками](#клиент-с-дополнительными-языками)
   - [Тонкий клиент](#тонкий-клиент)
   - [Тонкий клиент с дополнительными языками](#тонкий-клиент-с-дополнительными-языками)
@@ -73,6 +76,15 @@ env.bat
     * build-base-k8s-jenkins-agent.sh
     * build-edt-k8s-agent.sh
     * build-oscript-k8s-agent.sh
+
+Корп репо 1c-dev-repo-registry.repo.corp.tander.ru
+Пример push docker push 1c-dev-repo-registry.repo.corp.tander.ru/client-oscript-lib-vnc:8.3.22.1851    
+
+## Особенности запуска контейнеров в VNC
+
+Если в образе проброшен порт 5900
+docker run -it --rm -p 32771:5900 <id образа>
+доступ через Real VNC
 
 ## Как использовать готовые дистрибутивы
 
@@ -139,6 +151,35 @@ docker build --build-arg DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL} \
   -t ${DOCKER_REGISTRY_URL}/onec-client-vnc:${ONEC_VERSION} \
   -f client-vnc/Dockerfile .
 ```
+
+## Автономный сервер с установленным onescript, поддержкой VNC
+[(Наверх)](#Оглавление)
+
+Образ собирается на основе образа standalone-server-oscript
+
+```bash
+docker build --build-arg ONEC_VERSION=${ONEC_VERSION} \
+  --build-arg DOCKER_IMAGE=standalone-server-oscript \
+  --build-arg DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL} \
+  -t ${DOCKER_REGISTRY_URL}/client-oscript-vnc:${ONEC_VERSION} \
+  -f client-oscript-vnc/Dockerfile .
+```
+## Автономный сервер с установленным onescript, корп библиотеками onescript поддержкой VNC
+[(Наверх)](#Оглавление)
+
+Образ собирается на основе образа client-oscript-vnc
+Образ собирается внутри корп сети хранится в корп хабе
+
+```bash
+docker build --build-arg ONEC_VERSION=${ONEC_VERSION} \
+  --build-arg DOCKER_IMAGE=client-oscript-vnc \
+  --build-arg DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL} \
+  --build-arg ssh_prv_key="$(cat ~/.ssh/id_rsa)" \
+  --build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)" \
+  -t 1c-dev-repo-registry.repo.corp.tander.ru/client-oscript-vnc:${ONEC_VERSION} \
+  -f client-oscript-lib-vnc/Dockerfile .
+```
+
 
 ## Клиент с дополнительными языками
 [(Наверх)](#Оглавление)
