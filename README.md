@@ -176,7 +176,7 @@ docker build --build-arg ONEC_VERSION=${ONEC_VERSION} \
   --build-arg DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL} \
   --build-arg ssh_prv_key="$(cat ~/.ssh/id_rsa)" \
   --build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)" \
-  -t 1c-dev-repo-registry.repo.corp.tander.ru/client-oscript-vnc:${ONEC_VERSION} \
+  -t 1c-dev-repo-registry.repo.corp.tander.ru/client-oscript-lib-vnc:${ONEC_VERSION} \
   -f client-oscript-lib-vnc/Dockerfile .
 ```
 
